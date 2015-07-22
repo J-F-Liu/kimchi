@@ -102,7 +102,9 @@ class HostModel(object):
         return res
 
     def lookup(self, *name):
-        cpus = psutil.NUM_CPUS
+        cpus = 1
+        if hasattr(psutil, 'cpu_count'):
+            psutil.NUM_CPUS
 
         # psutil is unstable on how to get the number of
         # cpus, different versions call it differently
@@ -248,7 +250,7 @@ class HostStatsModel(object):
         prev_recv_bytes = net_recv_bytes[-1] if net_recv_bytes else 0
         prev_sent_bytes = net_sent_bytes[-1] if net_sent_bytes else 0
 
-        net_ios = psutil.network_io_counters(True)
+        net_ios = psutil.net_io_counters(True)
         recv_bytes = 0
         sent_bytes = 0
         for key in set(netinfo.nics() +
